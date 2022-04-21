@@ -17,22 +17,43 @@ public class MathParse {
         }
     }
 
+    /**
+     * Container for variables
+     */
     private static HashMap<String, Double> var;
 
+    /**
+     Constructor
+     */
     public MathParse() {
         var = new HashMap<>();
         setVariable("pi",Math.PI);
         setVariable("e",Math.E);
     }
 
+    /**
+     * Add variable to our container
+     * @param varName name of variable
+     * @param varValue value of variable
+     */
     public void setVariable(String varName, Double varValue) {
         var.put(varName, varValue);
     }
 
+    /**
+     * replacing variable in container
+     * @param varName name of variable
+     * @param varValue value of variable
+     */
     public void replaceVariable(String varName, Double varValue) {
         var.replace(varName, varValue);
     }
 
+    /**
+     * getting variable
+     * @param varName name of variable
+     * @return variable
+     */
     public Double getVariable(String varName) {
         if(!var.containsKey(varName)) {
             throw new NoSuchElementException("Error:Try get unexists " + "variable '" + varName + "'" );
@@ -40,12 +61,22 @@ public class MathParse {
         return var.get(varName);
     }
 
+    /**
+     * requesting for value of variable
+     * @param varName name of variable
+     * @return reading value of variable from console
+     */
     private Double requestValue(String varName){
         Scanner in = new Scanner(System.in);
         System.out.print(varName + " enter values  ");
         return in.nextDouble();
     }
 
+    /**
+     * Parse entered expression from user
+     * @param s expression
+     * @return result of expression
+     */
     public double Parse(String s) {
         if(s.isEmpty())
             throw new NoSuchElementException("Empty expression");
@@ -55,6 +86,11 @@ public class MathParse {
         return result.acc;
     }
 
+    /**
+     * main function of parsing expression
+     * @param s expression
+     * @return intermediate result of parsing
+     */
     private Result binaryFunc(String s) {
         Result cur;
 
@@ -88,6 +124,11 @@ public class MathParse {
         return new Result(acc,cur.rest);
     }
 
+    /**
+     *
+     * @param s
+     * @return
+     */
     private Result plusMinus(String s) {
         Result cur = mulDiv(s);
         double acc = cur.acc;
@@ -148,7 +189,11 @@ public class MathParse {
         }
     }
 
-
+    /**
+     * finding exponentiation func
+     * @param s rest expr
+     * @return intermediate result
+     */
     private Result exponentiation(String s) {
         Result cur = bracket(s);
         double acc = cur.acc;
@@ -170,7 +215,11 @@ public class MathParse {
         return cur;
     }
 
-
+    /**
+     * parse values inside of function bracket
+     * @param s rest expression
+     * @return intemediate result
+     */
     private Result bracket(String s) {
         s = skipSpaces(s);
         if (s.charAt(0) == '(') {
@@ -178,7 +227,7 @@ public class MathParse {
             if (!r.rest.isEmpty()) {
                 r.rest = r.rest.substring(1);
             } else {
-                throw new NoSuchElementException("Expected closing bracket");
+                throw new NoSuchElementException("Expected bracket in the end");
             }
             return r;
         }
@@ -220,11 +269,17 @@ public class MathParse {
         }
         return num(s);
     }
+
+    /**
+     * finding close bracket for function
+     * @param r intermediate result for func values
+     * @return intermediate result
+     */
     private Result closeBracket(Result r) {
         if(!r.rest.isEmpty() && r.rest.charAt(0) ==')'){
             r.rest = r.rest.substring(1);
         } else
-            throw new NoSuchElementException("Expected closing bracket");
+            throw new NoSuchElementException("Expected  bracket in the end ");
         return r;
     }
 
@@ -258,6 +313,12 @@ public class MathParse {
         return new Result(dPart, restPart);
     }
 
+    /**
+     * finding name of function or requesting for custom
+     * @param func name of func
+     * @param r intermediate result
+     * @return intermediate result of func
+     */
     private Result processFunction(String func, Result r) {
         switch (func) {
             case "sin":
@@ -290,6 +351,14 @@ public class MathParse {
                 return new Result(customfunction(func),r.rest);
         }
     }
+
+    /**
+     * finding name of function if there are two param
+     * @param func name of func
+     * @param acc accumulator
+     * @param r intermediate result
+     * @return intermediate result of func
+     */
     private Result processFunction(String func, double acc, Result r) {
         switch(func){
             case "log":
@@ -299,9 +368,20 @@ public class MathParse {
         }
     }
 
+    /**
+     * delete spaces from expr
+     * @param s expression
+     * @return expression without spaces
+     */
     private String skipSpaces(String s){
         return s.trim();
     }
+
+    /**
+     * requesting for body of custom func
+     * @param func func name
+     * @return result of parsing custom fubc
+     */
     private Double customfunction(String func){
         System.out.println("Enter body of ur function");
         Scanner console = new Scanner(System.in);
