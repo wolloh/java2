@@ -243,6 +243,8 @@ public class MathParse {
             f += s.charAt(i);
             i++;
         }
+        if(Character.isDigit(s.charAt(0)) && s.length()>1 &&  Character.isLetter(s.charAt(1)))
+            throw new IllegalArgumentException("Invalid name of variable");
         if (!f.isEmpty()) { // если что-нибудь нашли
             if (s.length() > i && s.charAt( i ) == '(') {
                 // и следующий символ скобка значит - это функция

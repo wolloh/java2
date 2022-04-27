@@ -14,8 +14,8 @@ public class MathParserTests {
     @Test
     public void validparse(){
         MathParse parser=new MathParse();
-        String expr="2*3";
-        assertEquals(6.0,parser.Parse(expr),0.1);
+        String expr="2*10";
+        assertEquals(20.0,parser.Parse(expr),0.1);
     }
     @Test
     public void failtoparsenoclosingbracket(){
